@@ -1,0 +1,105 @@
+<!DOCTYPE html><html>
+      <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8"/><link rel="stylesheet" href="/static/bootstrap.min.css" type="text/css"/><link rel="stylesheet" href="/static/vis.min.css" type="text/css"/><link rel="stylesheet" href="/static/webui.css" type="text/css"/><link rel="stylesheet" href="/static/timeline-view.css" type="text/css"/><script src="/static/sorttable.js"></script><script src="/static/jquery-1.11.1.min.js"></script><script src="/static/vis.min.js"></script><script src="/static/bootstrap-tooltip.js"></script><script src="/static/initialize-tooltips.js"></script><script src="/static/table.js"></script><script src="/static/additional-metrics.js"></script><script src="/static/timeline-view.js"></script><script src="/static/log-view.js"></script><script src="/static/webui.js"></script><script>setUIRoot('')</script>
+        
+        
+        <link rel="shortcut icon" href="/static/spark-logo-77x50px-hd.png"></link>
+        <title>pyspark-shell - Spark Jobs</title>
+      </head>
+      <body>
+        <div class="navbar navbar-static-top">
+          <div class="navbar-inner">
+            <div class="brand">
+              <a href="/" class="brand">
+                <img src="/static/spark-logo-77x50px-hd.png"/>
+                <span class="version">2.4.0</span>
+              </a>
+            </div>
+            <p class="navbar-text pull-right">
+              <strong title="pyspark-shell">pyspark-shell</strong> application UI
+            </p>
+            <ul class="nav"><li class="active">
+        <a href="/jobs/">Jobs</a>
+      </li><li class="">
+        <a href="/stages/">Stages</a>
+      </li><li class="">
+        <a href="/storage/">Storage</a>
+      </li><li class="">
+        <a href="/environment/">Environment</a>
+      </li><li class="">
+        <a href="/executors/">Executors</a>
+      </li><li class="">
+        <a href="/SQL/">SQL</a>
+      </li></ul>
+          </div>
+        </div>
+        <div class="container-fluid">
+          <div class="row-fluid">
+            <div class="span12">
+              <h3 style="vertical-align: bottom; display: inline-block;">
+                Spark Jobs
+                <sup>
+      (<a data-toggle="tooltip" data-placement="bottom" title="A job is triggered by an action, like count() or saveAsTextFile(). Click on a job to see information about the stages of tasks inside it.">?</a>)
+    </sup>
+              </h3>
+            </div>
+          </div>
+          <div>
+        <ul class="unstyled">
+          <li>
+            <strong>User:</strong>
+            jovyan
+          </li>
+          <li>
+            <strong>Total Uptime:</strong>
+            50 s
+          </li>
+          <li>
+            <strong>Scheduling Mode: </strong>
+            FIFO
+          </li>
+          
+          
+          
+        </ul>
+      </div><span class="expand-application-timeline">
+      <span class="expand-application-timeline-arrow arrow-closed"></span>
+      <a data-toggle="tooltip" title="Shows when jobs started and ended and when executors joined or left. Drag to scroll.
+       Click Enable Zooming and use mouse wheel to zoom in/out." data-placement="right">
+        Event Timeline
+      </a>
+    </span><div id="application-timeline" class="collapsed">
+      <div class="control-panel">
+        <div id="application-timeline-zoom-lock">
+          <input type="checkbox"></input>
+          <span>Enable zooming</span>
+        </div>
+      </div>
+    </div><script type="text/javascript">
+      drawApplicationTimeline(
+[
+  {
+    'id': 'executors',
+    'content': '<div>Executors</div><div class="legend-area"><svg width="150px" height="55px">      <rect class="executor-added-legend" x="5px" y="5px" width="20px" height="15px" rx="2px" ry="2px"></rect>      <text x="35px" y="17px">Added</text>      <rect class="executor-removed-legend" x="5px" y="30px" width="20px" height="15px" rx="2px" ry="2px"></rect>      <text x="35px" y="42px">Removed</text>    </svg></div>',
+  },
+  {
+    'id': 'jobs',
+    'content': '<div>Jobs</div><div class="legend-area"><svg width="150px" height="85px">      <rect class="succeeded-job-legend" x="5px" y="5px" width="20px" height="15px" rx="2px" ry="2px"></rect>      <text x="35px" y="17px">Succeeded</text>      <rect class="failed-job-legend" x="5px" y="30px" width="20px" height="15px" rx="2px" ry="2px"></rect>      <text x="35px" y="42px">Failed</text>      <rect class="running-job-legend" x="5px" y="55px" width="20px" height="15px" rx="2px" ry="2px"></rect>      <text x="35px" y="67px">Running</text>    </svg></div>',
+  }
+]
+        ,[
+{
+  'className': 'executor added',
+  'group': 'executors',
+  'start': new Date(1556017980787),
+  'content': '<div class="executor-event-content"' +
+    'data-toggle="tooltip" data-placement="bottom"' +
+    'data-title="Executor driver<br>' +
+    'Added at 2019/04/23 11:13:00"' +
+    'data-html="true">Executor driver added</div>'
+}
+         ], 1556017979803, 0);
+    </script>
+        </div>
+      </body>
+    </html>
