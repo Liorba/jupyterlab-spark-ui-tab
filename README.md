@@ -8,10 +8,17 @@ spark-ui-tab
 * JupyterLab
 
 ## Installation
+first install the python package:
+```bash
+pip install spark-ui-tab
+```
+you need to install both the lab extension as well as the server extension:
 
 ```bash
 jupyter labextension install spark-ui-tab
+jupyter serverextension install --py spark-ui-tab
 ```
+
 
 ## Development
 
