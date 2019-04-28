@@ -11,7 +11,7 @@ setup(name='spark-ui-tab',
       packages=find_packages(),
       license="apache-2.0",
       url = 'https://github.com/Liorba/spark-ui-tab',
-      download_url = 'https://github.com/Liorba/spark-ui-tab/archive/v0.1.tar.gz',
+      download_url = 'https://github.com/Liorba/spark-ui-tab/archive/v0.0.1.tar.gz',
       keywords = ['jupyter', 'extension', 'spark'],
       classifiers = [
       'Development Status :: Beta',
