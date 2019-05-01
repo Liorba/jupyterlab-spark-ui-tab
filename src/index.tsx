@@ -10,7 +10,7 @@ import {
 import '../style/index.css';
 import {ReadonlyJSONObject} from '@phosphor/coreutils';
 import {toArray} from '@phosphor/algorithm';
-import axios from 'axios';
+import axios, {AxiosResponse} from 'axios';
 
 /**
  * Initialization data for the spark-ui-tab extension.
@@ -64,29 +64,32 @@ function activate(app: JupyterLab, palette: ICommandPalette): void {
 
 class SparkUI extends IFrame {
 
-    constructor(app:JupyterLab) {
+    constructor(app: JupyterLab) {
         super();
-        this.url = app.info.urls.base+ 'sparkmonitor/';
-        // if (!this.isExists()) {
-        //     this.node.querySelector('iframe')!.srcdoc = "<h1>did not found spark</h1>"
-        // } // if (!this.isExists()) {
-        //     this.node.querySelector('iframe')!.srcdoc = "<h1>did not found spark</h1>"
-        // }
+        this.url = app.info.urls.base + 'sparkuitab/';
+        console.log("before axios");
+        axios.get(this.url).then(res => this.isExists(res)).then(x => {
+                if (!x) {
+                    this.node.querySelector('iframe')!.srcdoc = "<h1>did not found spark</h1>";
+                }
+            }
+        );
     }
 
-    isExists(): Boolean {
-        let exists: Boolean;
-        axios.get(this.url).then((res) => {
-            console.log(res);
-            exists = res.status /100  != 4
-        })
-            .catch((res) => {
-                console.log(res);
-                exists = false
-            });
-        return exists
+
+    isExists(res: AxiosResponse<any>): Boolean {
+        console.log(res);
+        if (res.status == 200){
+            if (res.data!.error == "SPARK_UI_NOT_RUNNING"){
+                return false;
+            }
+        }
+        return true
+
+
     }
 
 }
+
 
 export default extension;

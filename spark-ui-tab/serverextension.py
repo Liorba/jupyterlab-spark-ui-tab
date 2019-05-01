@@ -18,7 +18,7 @@ from traitlets.config import LoggingConfigurable
 from traitlets.traitlets import Unicode
 from bs4 import BeautifulSoup
 
-proxy_root = "/sparkmonitor"
+proxy_root = "/sparkuitab"
 
 
 class SparkMonitorHandler(IPythonHandler):
@@ -30,9 +30,8 @@ class SparkMonitorHandler(IPythonHandler):
 
         Fetches the Spark Web UI from the configured ports
         """
-        # print("SPARKMONITOR_SERVER: Handler GET")
+
         http = httpclient.AsyncHTTPClient()
-        # Without protocol and trailing slash
         baseurl = os.environ.get("SPARKMONITOR_UI_HOST", "127.0.0.1")
         port = os.environ.get("SPARKMONITOR_UI_PORT", "4040")
         url = "http://" + baseurl + ":" + port

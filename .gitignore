@@ -6,3 +6,5 @@ node_modules/
 .idea/
 spark-ui-tab/__pycache__/
 *.log
+dist/
+*.ipynb
