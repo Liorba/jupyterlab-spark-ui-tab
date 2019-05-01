@@ -1,6 +1,6 @@
 {
   "name": "@liorbaber/jupyterlab-spark-ui-tab",
-  "version": "0.0.4",
+  "version": "0.0.12",
   "description": "jupyterlab extension to have spark-ui avi;able as a tab",
   "keywords": [
     "jupyter",
