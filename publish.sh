@@ -2,7 +2,9 @@
 
 
 set -e
-export VERSION=$(git describe --tags $(git rev-list --tags --max-count=1))
+
+export VERSION=$(/bin/bash ./increment_semver.sh -p $(cat ./version.py))
+
 npm install -g npm-cli-login
 rm -rf dist
 pip install --user --upgrade setuptools wheel twine
@@ -12,3 +14,5 @@ python3 -m twine upload -u $NPM_USERNAME -p $NPM_PASS --verbose --repository-url
 npm-cli-login
 npm version $VERSION
 npm publish --access public
+echo $VERSION > ./version.py
+git tag $VERSION

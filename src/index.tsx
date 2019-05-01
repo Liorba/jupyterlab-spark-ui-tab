@@ -70,15 +70,15 @@ class SparkUI extends IFrame {
         console.log("before axios");
         axios.get(this.url).then(res => this.isExists(res)).then(x => {
                 if (!x) {
-                    this.node.querySelector('iframe')!.srcdoc = "<h1>did not found spark</h1>";
+                    this.node.querySelector('iframe')!.srcdoc = "<h1>did not found spark session</h1>";
                 }
             }
-        );
+        );              
     }
 
 
     isExists(res: AxiosResponse<any>): Boolean {
-        console.log(res);
+        console.log(res.data!.error);
         if (res.status == 200){
             if (res.data!.error == "SPARK_UI_NOT_RUNNING"){
                 return false;
