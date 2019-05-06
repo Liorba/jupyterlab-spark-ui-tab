@@ -11,6 +11,6 @@ echo $VERSION > ./version.py
 #python3 setup.py sdist bdist_wheel
 #python3 -m twine upload -u $NPM_USERNAME -p $NPM_PASS --verbose --repository-url https://upload.pypi.org/legacy/ dist/*
 npm-cli-login -u $NPM_USERNAME -p $NPM_PASS -e $NPM_EMAIL
-npm version $VERSION
+npm version $VERSION --force
 npm publish --access public
 git tag $VERSION

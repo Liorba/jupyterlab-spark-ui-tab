@@ -63,14 +63,15 @@ function activate(app: JupyterLab, palette: ICommandPalette): void {
 }
 
 class SparkUI extends IFrame {
-
+    html:string;
     constructor(app: JupyterLab) {
         super();
+        this.html ='./template.html';
         this.url = app.info.urls.base + 'sparkuitab/';
         console.log("before axios");
         axios.get(this.url).then(res => this.isExists(res)).then(x => {
                 if (!x) {
-                    this.node.querySelector('iframe')!.srcdoc = "<h1>did not found spark session</h1>";
+                    this.node.querySelector('iframe')!.src = this.html;
                 }
             }
         );              
