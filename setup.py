@@ -9,7 +9,7 @@ setup(name='jupyterlab-spark-ui-tab',
       setup_requires=['better-setuptools-git-version'],
       version_config={
             "version_format": "{tag}",
-            "starting_version": "0.0.0"
+            "starting_version": "0.0.0"                            
       },
       description='Spark UI extension for jupyterlab',
       author='Lior Baber',
