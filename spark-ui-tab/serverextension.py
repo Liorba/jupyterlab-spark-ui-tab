@@ -10,12 +10,9 @@ TODO Create unique endpoints for different kernels or spark applications.
 from notebook.base.handlers import IPythonHandler
 import tornado.web
 from tornado import httpclient
-import json
 import re
 import os
 import logging
-from traitlets.config import LoggingConfigurable
-from traitlets.traitlets import Unicode
 from bs4 import BeautifulSoup
 
 proxy_root = "/sparkuitab"

@@ -6,7 +6,11 @@ __version__  = ""
 with open("version.py",'r') as f:
       __version__ = f.read().strip()
 setup(name='jupyterlab-spark-ui-tab',
-      version=__version__,
+      setup_requires=['better-setuptools-git-version'],
+      version_config={
+            "version_format": "{tag}",
+            "starting_version": "0.0.0"
+      },
       description='Spark UI extension for jupyterlab',
       author='Lior Baber',
       author_email='liorbaber@gmail.com',
@@ -14,7 +18,6 @@ setup(name='jupyterlab-spark-ui-tab',
       packages=find_packages(),
       license="apache-2.0",
       url = 'https://github.com/Liorba/jupyterlab-spark-ui-tab',
-      download_url = 'https://github.com/Liorba/jupyterlab-spark-ui-tab/archive/v0.0.1.tar.gz',
       keywords = ['jupyter', 'extension', 'spark'],
       classifiers = [
       'Intended Audience :: Developers',
@@ -23,6 +26,6 @@ setup(name='jupyterlab-spark-ui-tab',
           ],
       zip_safe=False,
       install_requires=[
-          'bs4'
+          'bs4' ,
       ]
       )
