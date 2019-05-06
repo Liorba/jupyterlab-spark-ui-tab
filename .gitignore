@@ -8,3 +8,5 @@ spark-ui-tab/__pycache__/
 *.log
 dist/
 *.ipynb
+.eggs/
+yarn.lock
