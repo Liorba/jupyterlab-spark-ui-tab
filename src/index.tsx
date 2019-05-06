@@ -10,7 +10,7 @@ import {
 import '../style/index.css';
 import {ReadonlyJSONObject} from '@phosphor/coreutils';
 import {toArray} from '@phosphor/algorithm';
-import axios, {AxiosResponse} from 'axios';
+
 
 /**
  * Initialization data for the spark-ui-tab extension.
@@ -66,29 +66,11 @@ class SparkUI extends IFrame {
     html:string;
     constructor(app: JupyterLab) {
         super();
-        this.html ='./template.html';
         this.url = app.info.urls.base + 'sparkuitab/';
-        console.log("before axios");
-        axios.get(this.url).then(res => this.isExists(res)).then(x => {
-                if (!x) {
-                    this.node.querySelector('iframe')!.src = this.html;
-                }
-            }
-        );              
     }
 
 
-    isExists(res: AxiosResponse<any>): Boolean {
-        console.log(res.data!.error);
-        if (res.status == 200){
-            if (res.data!.error == "SPARK_UI_NOT_RUNNING"){
-                return false;
-            }
-        }
-        return true
 
-
-    }
 
 }
 

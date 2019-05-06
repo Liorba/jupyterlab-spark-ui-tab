@@ -50,26 +50,35 @@ class SparkMonitorHandler(IPythonHandler):
         http.fetch(backendurl, self.handle_response)
 
     def handle_response(self, response):
-        """Sends the fetched page as response to the GET request"""
-        if response.error:
-            content_type = "application/json"
-            content = json.dumps({"error": "SPARK_UI_NOT_RUNNING",
-                                  "url": self.debug_url, "backendurl": self.backendurl, "replace_path": self.replace_path})
-            print("SPARKMONITOR_SERVER: Spark UI not running")
-        else:
-            content_type = response.headers["Content-Type"]
-            # print("SPARKSERVER: CONTENT TYPE: "+ content_type + "\n")
-            if "text/html" in content_type:
-                content = replace(response.body, self.replace_path)
-            elif "javascript" in content_type:
-                body="location.origin +'" + self.replace_path + "' "
-                content = response.body.replace(b"location.origin",body.encode())
+        try:
+            """Sends the fetched page as response to the GET request"""
+            if response.error:
+                
+                content_type = "text/html"
+
+                try:
+                    with open(os.path.join(os.path.dirname(__file__),"spark_not_found.html"),'r') as f:
+                        content = f.read()
+                    print("SPARKMONITOR_SERVER: Spark UI not running")
+                except FileNotFoundError:
+                    logger.info("default html file was not found")
+
             else:
-                # Probably binary response, send it directly.
-                content = response.body
-        self.set_header("Content-Type", content_type)
-        self.write(content)
-        self.finish()
+                content_type = response.headers["Content-Type"]
+                if "text/html" in content_type:
+                    content = replace(response.body, self.replace_path)
+                elif "javascript" in content_type:
+                    body="location.origin +'" + self.replace_path + "' "
+                    content = response.body.replace(b"location.origin",body.encode())
+                else:
+                    # Probably binary response, send it directly.
+                    content = response.body
+            self.set_header("Content-Type", content_type)
+            self.write(content)
+            self.finish()
+        except Exception as e:
+            logger.error(str(e))
+            raise e
 
 
 def load_jupyter_server_extension(nb_server_app):
