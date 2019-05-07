@@ -3,8 +3,7 @@
 
 set -e
 
-export VERSION=$(/bin/bash ./increment_semver.sh -p $(cat ./version.py))
-echo $VERSION > ./version.py
+
 #npm install -g npm-cli-login
 #rm -rf dist
 #pip install --user --upgrade setuptools wheel twine

@@ -2,9 +2,8 @@
 
 from setuptools import setup, find_packages
 
-__version__  = ""
-with open("version.py",'r') as f:
-      __version__ = f.read().strip()
+
+
 setup(name='jupyterlab-spark-ui-tab',
       setup_requires=['better-setuptools-git-version'],
       version_config={
