@@ -1,4 +1,4 @@
-version: 2.1
+version: 2
 jobs:
   deploy-to-package-mamnagers:
     docker:
@@ -9,14 +9,14 @@ jobs:
           name: publish
           commnand: ./publish.py
 
-
 workflows:
-  version: 2.0
-     deploy-to-package-mamnagers:
-       jobs:
-       - deploy-to-package-mamnagers:
+  version: 2
+  deploy-to-package-mamnagers:
+    jobs:
+    - deploy-to-package-mamnagers:
           filters:
             tags:
               only: /^.*/
             branches:
               ignore: /^.*/
+
