@@ -1,0 +1,22 @@
+version: 2.1
+jobs:
+  deploy-to-package-mamnagers:
+    docker:
+      - image: docker:stable-git
+    working_directory: /root/project
+    steps:
+      - run:
+          name: publish
+          commnand: ./publish.py
+
+
+workflows:
+  version: 2.0
+     deploy-to-package-mamnagers:
+       jobs:
+       - deploy-to-package-mamnagers:
+          filters:
+            tags:
+              only: /^.*/
+            branches:
+              ignore: /^.*/

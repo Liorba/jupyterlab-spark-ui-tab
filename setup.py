@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 
 from setuptools import setup, find_packages
+from subprocess import check_output
 
 
 
 setup(name='jupyterlab-spark-ui-tab',
-      setup_requires=['setuptools-git-version'],
-      version_config={
-            "version_format": "{tag}",
-      },
+      version= check_output("git describe --tags".split()).decode("utf-8").strip(),
       description='Spark UI extension for jupyterlab',
       author='Lior Baber',
       author_email='liorbaber@gmail.com',
