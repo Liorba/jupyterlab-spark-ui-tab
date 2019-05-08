@@ -13,10 +13,10 @@ import {toArray} from '@phosphor/algorithm';
 
 
 /**
- * Initialization data for the spark-ui-tab extension.
+ * Initialization data for the spark_ui_tab extension.
  */
 const extension: JupyterLabPlugin<void> = {
-    id: 'spark-ui-tab',
+    id: 'spark_ui_tab',
     autoStart: true,
     requires: [ICommandPalette],
     activate

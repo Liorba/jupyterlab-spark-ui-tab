@@ -21,7 +21,6 @@ proxy_root = "/sparkuitab"
 class SparkMonitorHandler(IPythonHandler):
     """A custom tornado request handler to proxy Spark Web UI requests."""
 
-    @tornado.web.asynchronous
     def get(self):
         """Handles get requests to the Spark UI
 
