@@ -7,7 +7,7 @@ jobs:
     steps:
       - run:
           name: publish
-          commnand: ./publish.py
+          commnand: ./publish.sh
 
 workflows:
   version: 2
