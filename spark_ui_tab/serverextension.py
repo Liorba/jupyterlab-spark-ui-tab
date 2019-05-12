@@ -21,7 +21,7 @@ proxy_root = "/sparkuitab"
 class SparkMonitorHandler(IPythonHandler):
     """A custom tornado request handler to proxy Spark Web UI requests."""
 
-    def get(self):
+    async def get(self):
         """Handles get requests to the Spark UI
 
         Fetches the Spark Web UI from the configured ports
@@ -31,44 +31,48 @@ class SparkMonitorHandler(IPythonHandler):
         baseurl = os.environ.get("SPARKMONITOR_UI_HOST", "127.0.0.1")
         port = os.environ.get("SPARKMONITOR_UI_PORT", "4040")
         url = "http://" + baseurl + ":" + port
-        # print("SPARKMONITOR_SERVER: Request URI" + self.request.uri)
-        # print("SPARKMONITOR_SERVER: Getting from " + url)
         request_path = self.request.uri[(
-            self.request.uri.index(proxy_root) + len(proxy_root) + 1):]
+                                                self.request.uri.index(proxy_root) + len(proxy_root) + 1):]
         self.replace_path = self.request.uri[:self.request.uri.index(
             proxy_root) + len(proxy_root)]
         # print("SPARKMONITOR_SERVER: Request_path " + request_path + " \n Replace_path:" + self.replace_path)
         backendurl = url_path_join(url, request_path)
         self.debug_url = url
         self.backendurl = backendurl
-        logger.info("GET: \n Request uri:%s \n Port: %s \n Host: %s \n request_path: %s ", self.request.uri, os.environ.get(
-            "SPARKMONITOR_UI_PORT", "4040"), os.environ.get("SPARKMONITOR_UI_HOST", "127.0.0.1"), request_path)
-        http.fetch(backendurl, self.handle_response)
+        logger.info("GET: \n Request uri:%s \n Port: %s \n Host: %s \n request_path: %s ", self.request.uri,
+                    os.environ.get(
+                        "SPARKMONITOR_UI_PORT", "4040"), os.environ.get("SPARKMONITOR_UI_HOST", "127.0.0.1"),
+                    request_path)
+        try:
+            x = await http.fetch(backendurl)
+            self.handle_response(x)
+        except:
+            self.handle_bad_response()
+
+    def handle_bad_response(self):
+        content_type = "text/html"
+
+        try:
+            with open(os.path.join(os.path.dirname(__file__), "spark_not_found.html"), 'r') as f:
+                content = f.read()
+                self.set_header("Content-Type", content_type)
+                self.write(content)
+                self.finish()
+            print("SPARKMONITOR_SERVER: Spark UI not running")
+        except FileNotFoundError:
+            logger.info("default html file was not found")
 
     def handle_response(self, response):
         try:
-            """Sends the fetched page as response to the GET request"""
-            if response.error:
-                
-                content_type = "text/html"
-
-                try:
-                    with open(os.path.join(os.path.dirname(__file__),"spark_not_found.html"),'r') as f:
-                        content = f.read()
-                    print("SPARKMONITOR_SERVER: Spark UI not running")
-                except FileNotFoundError:
-                    logger.info("default html file was not found")
-
+            content_type = response.headers["Content-Type"]
+            if "text/html" in content_type:
+                content = replace(response.body, self.replace_path)
+            elif "javascript" in content_type:
+                body = "location.origin +'" + self.replace_path + "' "
+                content = response.body.replace(b"location.origin", body.encode())
             else:
-                content_type = response.headers["Content-Type"]
-                if "text/html" in content_type:
-                    content = replace(response.body, self.replace_path)
-                elif "javascript" in content_type:
-                    body="location.origin +'" + self.replace_path + "' "
-                    content = response.body.replace(b"location.origin",body.encode())
-                else:
-                    # Probably binary response, send it directly.
-                    content = response.body
+                # Probably binary response, send it directly.
+                content = response.body
             self.set_header("Content-Type", content_type)
             self.write(content)
             self.finish()
@@ -93,13 +97,14 @@ def load_jupyter_server_extension(nb_server_app):
     logger.setLevel(logging.DEBUG)
     logger.propagate = False
     # For debugging this module - Writes logs to a file
+    #TODO: find a more k8s way to do so
     fh = logging.FileHandler("sparkmonitor_serverextension.log", mode="w")
     fh.setLevel(logging.DEBUG)
     formatter = logging.Formatter(
         "%(levelname)s:  %(asctime)s - %(name)s - %(process)d - %(processName)s - \
         %(thread)d - %(threadName)s\n %(message)s \n")
     fh.setFormatter(formatter)
-    logger.addHandler(fh) ## Comment this line to disable logging to a file.
+    logger.addHandler(fh)  ## Comment this line to disable logging to a file.
 
     web_app = nb_server_app.web_app
     host_pattern = ".*$"
