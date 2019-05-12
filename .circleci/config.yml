@@ -7,7 +7,7 @@ jobs:
     steps:
       - run:
           name: publish
-          commnand: ./publish.sh
+          command: ./publish.sh
 
 workflows:
   version: 2
