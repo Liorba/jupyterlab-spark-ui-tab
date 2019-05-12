@@ -5,6 +5,7 @@ jobs:
       - image: docker:stable-git
     working_directory: /root/project
     steps:
+      - checkout
       - run:
           name: publish
           command: ./publish.sh
