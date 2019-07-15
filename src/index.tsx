@@ -10,6 +10,9 @@ import {
 import '../style/index.css';
 import {ReadonlyJSONObject} from '@phosphor/coreutils';
 import {toArray} from '@phosphor/algorithm';
+import {Menu} from '@phosphor/widgets'
+import {IMainMenu} from '@jupyterlab/mainmenu'
+
 
 
 /**
@@ -18,7 +21,7 @@ import {toArray} from '@phosphor/algorithm';
 const extension: JupyterLabPlugin<void> = {
     id: 'spark_ui_tab',
     autoStart: true,
-    requires: [ICommandPalette],
+    requires: [IMainMenu, ICommandPalette],
     activate
 
 };
@@ -27,12 +30,12 @@ namespace CommandIDs {
     export const run = 'sparkui:run';
 }
 
-function activate(app: JupyterLab, palette: ICommandPalette): void {
+function activate(app: JupyterLab, mainMenu: IMainMenu, palette: ICommandPalette): void {
     const {commands, shell} = app;
     console.log("in activate");
 
     commands.addCommand(CommandIDs.run, {
-        label: 'spark UI',
+        label: 'Spark UI',
         execute: (args: ReadonlyJSONObject) => {
 
 
@@ -60,6 +63,17 @@ function activate(app: JupyterLab, palette: ICommandPalette): void {
 
     });
     palette.addItem({command: CommandIDs.run, category: 'Spark'});
+
+    let menu = createMenu(app);
+    mainMenu.addMenu(menu, {rank: 100});
+}
+
+export function createMenu(app: JupyterLab): Menu {
+    const {commands} = app;
+    let menu: Menu = new Menu({commands});
+    menu.title.label = 'Spark';
+    menu.addItem({command: CommandIDs.run});
+    return menu;
 }
 
 class SparkUI extends IFrame {
