@@ -15,7 +15,7 @@ pip install jupyterlab-spark-ui-tab
 you need to install both the lab extension as well as the server extension:
 
 ```bash
-jupyter labextension install @liorbaber/spark-ui-tab
+jupyter labextension install @acmore/jupyterlab-spark-ui-tab
 jupyter serverextension install --py spark-ui-tab
 ```
 
