@@ -1,6 +1,7 @@
 import {
-    JupyterLab, JupyterLabPlugin
+    JupyterFrontEnd, JupyterFrontEndPlugin, LabShell
 } from '@jupyterlab/application';
+import { PageConfig } from '@jupyterlab/coreutils';
 import {
     ICommandPalette, IFrame,
     MainAreaWidget,
@@ -8,14 +9,14 @@ import {
 
 // import * as React from 'react';
 import '../style/index.css';
-import {ReadonlyJSONObject} from '@phosphor/coreutils';
-import {toArray} from '@phosphor/algorithm';
+import {ReadonlyJSONObject} from '@lumino/coreutils';
+import {toArray} from '@lumino/algorithm';
 
 
 /**
  * Initialization data for the spark_ui_tab extension.
  */
-const extension: JupyterLabPlugin<void> = {
+const extension: JupyterFrontEndPlugin<void> = {
     id: 'spark_ui_tab',
     autoStart: true,
     requires: [ICommandPalette],
@@ -27,7 +28,7 @@ namespace CommandIDs {
     export const run = 'sparkui:run';
 }
 
-function activate(app: JupyterLab, palette: ICommandPalette): void {
+function activate(app: JupyterFrontEnd, palette: ICommandPalette): void {
     const {commands, shell} = app;
     console.log("in activate");
 
@@ -45,15 +46,17 @@ function activate(app: JupyterLab, palette: ICommandPalette): void {
             // If there are any other widgets open, remove the launcher close icon.
             main.title.closable = !!toArray(shell.widgets('main')).length;
 
-            shell.addToMainArea(main, {activate: args['activate'] as boolean});
+            shell.add(main, 'main', {activate: args['activate'] as boolean});
 
-            shell.layoutModified.connect(
-                () => {
-                    // If there is only a launcher open, remove the close icon.
-                    main.title.closable = toArray(shell.widgets('main')).length > 1;
-                },
-                main
-            );
+            if (shell instanceof LabShell) {
+                shell.layoutModified.connect(
+                    () => {
+                        // If there is only a launcher open, remove the close icon.
+                        main.title.closable = toArray(shell.widgets('main')).length > 1;
+                    },
+                    main
+                );
+            }
 
             return main;
         }
@@ -64,9 +67,10 @@ function activate(app: JupyterLab, palette: ICommandPalette): void {
 
 class SparkUI extends IFrame {
     html:string;
-    constructor(app: JupyterLab) {
+    constructor(app: JupyterFrontEnd) {
         super();
-        this.url = app.info.urls.base + 'sparkuitab/';
+        const baseUrl = PageConfig.getBaseUrl();
+        this.url = baseUrl + 'sparkuitab/';
     }
 
 

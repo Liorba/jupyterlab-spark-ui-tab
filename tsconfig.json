@@ -6,6 +6,7 @@
     "moduleResolution": "node",
     "noEmitOnError": true,
     "noUnusedLocals": true,
+    "esModuleInterop": true,
     "outDir": "lib",
     "rootDir": "src",
     "strict": true,
